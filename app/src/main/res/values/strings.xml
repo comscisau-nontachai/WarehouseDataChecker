@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">WareHouseData</string>
+    <string name="app_name_th">โปรแกรมตรวจเช็ค คลังสินค้าสำเร็จรูป | คลังวัตถุดิบ | คลังส่วนประกอบ</string>
+    <string name="copyright">© 2018 S.T. Rubber factory Co., LTD. by software development team</string>
+
+</resources>

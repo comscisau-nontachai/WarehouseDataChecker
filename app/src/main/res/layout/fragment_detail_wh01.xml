@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.DetailWh01Fragment">
+
+    <LinearLayout
+        android:id="@+id/linear_detail_product"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".4">
+
+            <TextView
+                android:id="@+id/txt_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="&lt; back"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/image_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="30dp"
+                android:src="@drawable/test_pic" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:paddingEnd="20dp"
+            android:layout_weight=".5"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <customfonts.MyTextView
+                    android:layout_width="match_parent"
+                    android:text="0193-34-820"
+                    android:textSize="@dimen/txt_size_title_detail"
+                    android:id="@+id/txt_part"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="พาร์ทนัมเบอร์ที่เกี่ยวข้อง : 019334820,1243-34-460,124334460  "
+                    android:id="@+id/txt_relate"
+                    android:textSize="@dimen/txt_size_desc_detail"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content" />
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="1dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="รายละเอียดสินค้า : บูชปีกนกล่าง BUSHING [LOWER], B1200, B1600, 929[1987], FORD COURIER"
+                    android:textSize="@dimen/txt_size_desc_detail"
+                    android:id="@+id/txt_detail"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="กลุ่มสินค้า : Arm Bushing (บูชปีกนกหน้า-ตัวล่าง) "
+                    android:textSize="@dimen/txt_size_desc_detail"
+                    android:id="@+id/txt_group"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text=" ประเภทสินค้า : มีผลิต / งานติดเหล็ก / งานด้านนอก"
+                    android:textSize="@dimen/txt_size_desc_detail"
+                    android:id="@+id/txt_type"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/margin_top_area_linear"
+                    android:layout_height="70dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:text="พื้นที่/แถว/ล็อก/ชั้น"
+                            android:layout_weight="1.2"
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:text="คงเหลือ"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1.2"
+                            android:gravity="center_horizontal"
+                            android:text="เหลือจริง"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:paddingTop="10dp"
+                        android:layout_height="0dp">
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:layout_width="0dp"
+                            android:text="1/0/0"
+                            android:layout_weight="1.2"
+                            android:id="@+id/txt_area_all"
+                            android:gravity="center"
+                            android:textSize="@dimen/txt_size_area_detail"
+                            android:layout_height="match_parent" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:text="100"
+                            android:layout_weight="1"
+                            android:textColor="@color/material_light_green_600"
+                            android:textStyle="bold"
+                            android:id="@+id/txt_qty"
+                            android:textSize="@dimen/txt_size_area_detail"
+                            android:gravity="center"
+                            android:layout_height="match_parent" />
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1.2"
+                            android:layout_height="match_parent">
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/tab_left"
+                                android:inputType="number"
+                                android:textSize="@dimen/txt_size_area_detail"
+                                android:hint="จำนวน"
+                                android:padding="5dp"
+                                android:layout_gravity="center"
+                                android:id="@+id/edt_real_count"
+                                android:layout_height="match_parent" />
+
+                            <Button
+                                android:text="บันทึก"
+                                android:layout_alignParentRight="true"
+                                android:layout_width="50dp"
+                                android:id="@+id/btn_save"
+                                android:textColor="@android:color/white"
+                                android:background="@drawable/btn_orange_no_radius"
+                                android:layout_height="match_parent" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
+
+</FrameLayout>

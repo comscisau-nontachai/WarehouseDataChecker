@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3D4751</color>
+    <color name="colorPrimaryDark">#2d353d</color>
+    <color name="colorAccent">#ef9621</color>
+
+    <color name="lightgray">#e1e0e0</color>
+    <color name="lightblue">#443C4A57</color>
+
+    <color name="red_icon_color">#c97478</color>
+    <color name="yellow_icon_color">#f1bd25</color>
+    <color name="green_icon_color">#92c89f</color>
+    <color name="blue_icon_color">#809fc5</color>
+
+    <color name="list_title_color">#434242</color>
+    <color name="list_item_color">#808080</color>
+
+    <!--WareHouse Fragment Color-->
+    <color name="left_menu_color">#3C4A57</color>
+    <color name="left_menu_color_active">#566b7e</color>
+    <color name="toolbar_color">#33383C</color>
+    <color name="accent_color">#F9DA1D</color>
+    <color name="bg_fragment">#EDF1F4</color>
+    <color name="colordevider">#5e7589</color>
+
+
+</resources>

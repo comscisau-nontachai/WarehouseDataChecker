@@ -1,0 +1,22 @@
+<resources>
+
+    <dimen name="margin_main_login">80dp</dimen>
+    <dimen name="margin_form_login">40dp</dimen>
+
+    <!--Size for phone-->
+    <dimen name="size_head_toolbar">15sp</dimen>
+    <dimen name="txt_size_title_warehouse">15sp</dimen>
+
+    <dimen name="txt_size_item_product">16sp</dimen>
+    <dimen name="img_size_item_product">70sp</dimen>
+    <dimen name="img_size_item_category">20dp</dimen>
+    <dimen name="txt_size_item_category">15sp</dimen>
+    <dimen name="margin_item_category">5dp</dimen>
+
+    <dimen name="txt_size_title_detail">35sp</dimen>
+    <dimen name="txt_size_desc_detail">12sp</dimen>
+    <dimen name="txt_size_area_title_detail">18sp</dimen>
+    <dimen name="txt_size_area_detail">14sp</dimen>
+    <dimen name="margin_top_area_linear">15dp</dimen>
+
+</resources>

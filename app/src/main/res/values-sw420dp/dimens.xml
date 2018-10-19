@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--size for tablet-->
+    <dimen name="size_head_toolbar">20sp</dimen>
+    <dimen name="txt_size_title_warehouse">20sp</dimen>
+
+    <dimen name="txt_size_item_product">25sp</dimen>
+    <dimen name="img_size_item_product">90sp</dimen>
+    <dimen name="img_size_item_category">35dp</dimen>
+    <dimen name="txt_size_item_category">18sp</dimen>
+    <dimen name="margin_item_category">20dp</dimen>
+
+    <dimen name="txt_size_title_detail">65sp</dimen>
+    <dimen name="txt_size_desc_detail">18sp</dimen>
+    <dimen name="txt_size_area_title_detail">18sp</dimen>
+    <dimen name="txt_size_area_detail">30sp</dimen>
+    <dimen name="margin_top_area_linear">30dp</dimen>
+
+</resources>

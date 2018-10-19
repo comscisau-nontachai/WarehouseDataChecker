@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="ประวัติ">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:icon="@drawable/ic_launcher_background"
+                    android:id="@+id/nav_income"
+                    android:title="รายได้/รายหัก" />
+                <item
+                    android:icon="@drawable/ic_launcher_background"
+                    android:id="@+id/nav_fund"
+                    android:title="กองทุน" />
+
+
+            </group>
+        </menu>
+    </item>
+
+
+
+
+</menu>

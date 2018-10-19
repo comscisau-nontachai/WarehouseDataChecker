@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:id="@+id/linear_category"
+    android:background="@color/left_menu_color"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="8dp"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:id="@+id/incicate_left"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:background="@color/accent_color" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="@dimen/img_size_item_category"
+                android:layout_height="@dimen/img_size_item_category"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_item_category"
+                android:background="@drawable/circle_no_fill"
+                android:padding="3dp"
+                android:src="@drawable/ic_keyboard_arrow_right" />
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:text="เพลากลาง"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/txt_size_item_category" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colordevider" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
