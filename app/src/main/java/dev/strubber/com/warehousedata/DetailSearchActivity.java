@@ -20,6 +20,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 import dev.strubber.com.warehousedata.fragment.ShowListWH01Fragment;
 import dev.strubber.com.warehousedata.model.ConnectionDB;
@@ -36,7 +39,7 @@ public class DetailSearchActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private LinearLayout lineawr_detail;
 
-   private String part, relate, group, qty, qty_real, detail, area1, area2, area3, area4, type;
+   private String part, relate, group, qty_show,qty_old, qty_new, detail, area1, area2, area3, area4, type,category_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,7 @@ public class DetailSearchActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 new InsertData().execute();
+
             }
         });
     }
@@ -98,18 +102,36 @@ public class DetailSearchActivity extends AppCompatActivity {
             if (conn != null) {
                 try {
 
-
-                    String query = "select v_pro.id,v_pro.part,v_pro.relate,pn.description,ld3.name,pt.type_name,st.st_name,std.detail_name,v_pro.area_name,v_pro.row_name,v_pro.column_no,v_pro.shelf,FORMAT(v_pro.qty,'N0')as qty2,FORMAT(cp.count_new,'0')as count_new from Sys_WarehouseManagement..v_Products_Description v_pro \n" +
-                            "LEFT JOIN [ST_TEST].[dbo].[mob_check_partnumber] cp ON v_pro.part_id = cp.part_id_checked and v_pro.type_id = cp.type_id_check and v_pro.id=cp.record_part\n" +
-                            "INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_group] pg ON v_pro.part_id = pg.part_id\n" +
-                            "INNER JOIN [Sys_DataMaster].[dbo].[layer3_data] ld3 ON pg.type_id = ld3.id\n" +
-                            "INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_type] spnt ON v_pro.part_id = spnt.part_id\n" +
-                            "INNER JOIN  [Sys_DataMaster].[dbo].[partnumber_type] pt ON spnt.type_part = pt.record_id\n" +
-                            "INNER JOIN [Sys_DataMaster].[dbo].[st_type] st ON spnt.work_type = st.record_id\n" +
-                            "INNER JOIN [Sys_DataMaster].[dbo].[st_type_detail] std ON spnt.detail_type = std.record_id\n" +
-                            "INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_new] pn ON pn.record_id = v_pro.part_id\n" +
-                            "where  v_pro.part_id = "+part_id+" and v_pro.type_id="+type_id+" and v_pro.id="+record_id+" and v_pro.IsDelete=0 and pg.IsDelete=0 and ld3.IsDelete=0 and spnt.IsDelete=0\n" +
-                            "and pt.IsDelete=0 and st.IsDelete=0 and std.IsDelete=0 and v_pro.IsDelete=0";
+//                    String query = "select v_pro.id,v_pro.part,v_pro.relate,pn.description,ld3.name,pt.type_name,st.st_name,std.detail_name,v_pro.area_name,v_pro.row_name,v_pro.column_no,v_pro.shelf,FORMAT(v_pro.qty,'N0')as qty2,FORMAT(cp.count_new,'0')as count_new from Sys_WarehouseManagement..v_Products_Description v_pro \n" +
+//                            "LEFT JOIN [ST_TEST].[dbo].[mob_check_partnumber] cp ON v_pro.part_id = cp.part_id_checked and v_pro.type_id = cp.type_id_check and v_pro.id=cp.record_part\n" +
+//                            "INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_group] pg ON v_pro.part_id = pg.part_id\n" +
+//                            "INNER JOIN [Sys_DataMaster].[dbo].[layer3_data] ld3 ON pg.type_id = ld3.id\n" +
+//                            "INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_type] spnt ON v_pro.part_id = spnt.part_id\n" +
+//                            "INNER JOIN  [Sys_DataMaster].[dbo].[partnumber_type] pt ON spnt.type_part = pt.record_id\n" +
+//                            "INNER JOIN [Sys_DataMaster].[dbo].[st_type] st ON spnt.work_type = st.record_id\n" +
+//                            "INNER JOIN [Sys_DataMaster].[dbo].[st_type_detail] std ON spnt.detail_type = std.record_id\n" +
+//                            "INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_new] pn ON pn.record_id = v_pro.part_id\n" +
+//                            "where  v_pro.part_id = "+part_id+" and v_pro.type_id="+type_id+" and v_pro.id="+record_id+" and v_pro.IsDelete=0 and pg.IsDelete=0 and ld3.IsDelete=0 and spnt.IsDelete=0\n" +
+//                            "and pt.IsDelete=0 and st.IsDelete=0 and std.IsDelete=0 and v_pro.IsDelete=0";
+                    String query = "select v_pro.id,v_pro.part,v_pro.relate,v_pro.category_id,pn.description,ld3.name,pt.type_name,st.st_name,std.detail_name,v_pro.area_name,v_pro.row_name,v_pro.column_no,\n" +
+                            "CASE\n" +
+                            "   WHEN v_pro.shelf = 0 THEN '-' \n" +
+                            "   WHEN v_pro.shelf != 0 THEN v_pro.shelf\n" +
+                            "   ELSE '-'" +
+                            "END as shelf\n" +
+                            ",FORMAT(v_pro.qty,'N0')as qty_show,FORMAT(v_pro.qty,'0')as qty_old,FORMAT(cp.count_new,'0')as count_new from Sys_WarehouseManagement..v_Products_Description v_pro \n" +
+                            "    LEFT JOIN [ST_TEST].[dbo].[mob_check_partnumber] cp ON v_pro.part_id = cp.part_id_checked and v_pro.type_id = cp.type_id_check and v_pro.id=cp.record_part\n" +
+                            "    INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_group] pg ON v_pro.part_id = pg.part_id\n" +
+                            "    INNER JOIN [Sys_DataMaster].[dbo].[layer3_data] ld3 ON pg.type_id = ld3.id\n" +
+                            "    INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_type] spnt ON v_pro.part_id = spnt.part_id\n" +
+                            "    INNER JOIN  [Sys_DataMaster].[dbo].[partnumber_type] pt ON spnt.type_part = pt.record_id\n" +
+                            "    INNER JOIN [Sys_DataMaster].[dbo].[st_type] st ON spnt.work_type = st.record_id\n" +
+                            "    INNER JOIN [Sys_DataMaster].[dbo].[st_type_detail] std ON spnt.detail_type = std.record_id\n" +
+                            "    INNER JOIN [Sys_DataMaster].[dbo].[sys_partnumber_new] pn ON pn.record_id = v_pro.part_id\n" +
+                            "    where  v_pro.part_id = "+part_id+" and v_pro.id="+record_id+"";
+//                            and v_pro.IsDelete=0 and pg.IsDelete=0 and ld3.IsDelete=0 and spnt.IsDelete=0\n" +
+//                            "    and pt.IsDelete=0 and st.IsDelete=0 and std.IsDelete=0 and v_pro.IsDelete=0";
+                    Log.d("GetDetail", query);
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 
@@ -125,8 +147,10 @@ public class DetailSearchActivity extends AppCompatActivity {
                         area2 = rs.getString("row_name");
                         area3 = rs.getString("column_no");
                         area4 = rs.getString("shelf");
-                        qty = rs.getString("qty2");
-                        qty_real = rs.getString("count_new");
+                        qty_show = rs.getString("qty_show");
+                        qty_old = rs.getString("qty_old");
+                        qty_new = rs.getString("count_new");
+                        category_id = rs.getString("category_id");
 
 
                     }
@@ -148,12 +172,35 @@ public class DetailSearchActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             lineawr_detail.setVisibility(View.VISIBLE);
 
-            if (type_id.equals("1")) {
-                txt_part.setText(part + "JAP");
-            } else if (type_id.equals("2")) {
-                txt_part.setText(part + "HIC");
-            } else {
-                txt_part.setText(part);
+
+            ////Check which warehouse for add ext.
+            if (category_id.equals("31")) {
+
+                if (type_id.equals("1")) {
+                    txt_part.setText(part + "JAP");
+                } else if (type_id.equals("2")) {
+                    txt_part.setText(part + "HIC");
+                } else if (type_id.equals("13")) {
+                    txt_part.setText(part + "");
+                } else if (type_id.equals("15")) {
+                    txt_part.setText(part + "STL");
+                } else {
+                    txt_part.setText(part + "ORI");
+                }
+
+            } else if (category_id.equals("32")) {
+
+                if (type_id.equals("1")) {
+                    txt_part.setText(part + "");
+                }else if(type_id.equals("2"))
+                {
+                    txt_part.setText(part + "YSS");
+                }else
+                {
+                    txt_part.setText(part + "KYB");
+                }
+            } else if(category_id.equals("33")){
+                txt_part.setText(part + "");
             }
             Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/MavenPro-Regular.ttf");
             txt_part.setTypeface(tf, Typeface.BOLD);
@@ -162,16 +209,25 @@ public class DetailSearchActivity extends AppCompatActivity {
             txt_detail.setText("รายละเอียดสินค้า : " + detail);
             txt_group.setText("กลุ่มสินค้า : " + group);
             txt_type.setText("ประเภทสินค้า : " + type);
-            txt_area.setText(area1 + " / " + area2 + " / " + area3 + " / " + area4);
 
-            if (qty_real != null) {
-                txt_qty.setText(qty_real);
-                edt_quantity_new.setText(String.valueOf(qty_real));
+            String area_sum = area1!=null?area1:"-";
+            area_sum += " / ";
+            area_sum += area2!=null?area2:"-";
+            area_sum += " / ";
+            area_sum += area3!=null?area3:"-";
+            area_sum += " / ";
+            area_sum += !area4.equals("0")?area4:"-";
+            txt_area.setText(area_sum);
+
+
+            ////set quantity to txt and edt
+            if (qty_new != null) {
+                txt_qty.setText(qty_new);
+                edt_quantity_new.setText(String.valueOf(qty_new));
             } else {
-                txt_qty.setText(qty);
-                edt_quantity_new.setText(String.valueOf(qty));
+                txt_qty.setText(qty_show);
+                    edt_quantity_new.setText(qty_old);
             }
-
 
             //set image
             String img = "http://roomdatasoftware.strubberdata.com/pic_partnumber_new/" + image;
@@ -196,14 +252,15 @@ public class DetailSearchActivity extends AppCompatActivity {
                 try {
 
                     String query = "IF not EXISTS(select * from Sys_WarehouseManagement..v_Products_Description v_pro LEFT JOIN ST_TEST..mob_check_partnumber cp\n" +
-                            "    ON v_pro.part_id = cp.part_id_checked and record_part = "+record_id+" WHERE part_id_checked = "+part_id+" and type_id_check = "+type_id+" and v_pro.id="+record_id+")\n" +
+                            "    ON v_pro.part_id = cp.part_id_checked and record_part = "+record_id+" WHERE part_id_checked = "+part_id+" and v_pro.id="+record_id+")\n" +
                             "            BEGIN\n" +
-                            "                 insert into ST_TEST..mob_check_partnumber values("+record_id+",'"+part+"',"+part_id+","+type_id+","+qty+","+edt_quantity_new.getText().toString()+",GETDATE(),'"+MainActivity.name+"');\n" +
+                            "                 insert into ST_TEST..mob_check_partnumber values("+record_id+",'"+part+"',"+part_id+","+type_id+","+qty_old+","+edt_quantity_new.getText().toString()+",GETDATE(),'"+MainActivity.name+"');\n" +
                             "            END\n" +
                             "            ELSE\n" +
                             "            BEGIN\n" +
-                            "              update ST_TEST..mob_check_partnumber set count_new = "+edt_quantity_new.getText().toString()+",date_check=GETDATE(),name_check='"+edt_quantity_new.getText().toString()+"' where part_id_checked = "+part_id+" and type_id_check = "+type_id+" and record_part = "+record_id+"\n" +
+                            "              update ST_TEST..mob_check_partnumber set count_new = "+edt_quantity_new.getText().toString()+",date_check=GETDATE(),name_check='"+MainActivity.name+"' where part_id_checked = "+part_id+" and record_part = "+record_id+"\n" +
                             "            END";
+                    Log.d("InsertData", query);
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 

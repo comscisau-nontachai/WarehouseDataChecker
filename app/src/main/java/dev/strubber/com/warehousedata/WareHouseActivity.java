@@ -1,20 +1,14 @@
 package dev.strubber.com.warehousedata;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -28,48 +22,68 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.strubber.com.warehousedata.fragment.DetailWh01Fragment;
 import dev.strubber.com.warehousedata.fragment.ShowListWH01Fragment;
 import dev.strubber.com.warehousedata.model.ConnectionDB;
 import dev.strubber.com.warehousedata.model.WareHouseModel;
 
-public class WH01Activity extends AppCompatActivity {
+public class WareHouseActivity extends AppCompatActivity {
 
     private ConnectionDB connectionDB = new ConnectionDB();
 
     private RecyclerView recyclerView;
-    List<WareHouseModel> list_category;
+    private List<WareHouseModel> list_category;
+    public static String category_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wh01);
+        setContentView(R.layout.activity_warehouse);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("ข้อมูล คลังสินค้าสำเร็จรูป");
 
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
+        category_id = getIntent().getStringExtra("CATEGORY_ID");
+        switch (category_id) {
+            case "31": {
+                getSupportActionBar().setTitle("ข้อมูล คลังสินค้าสำเร็จรูป");
+                getFirstPageFragmnet("WH01");
+                break;
+            }
+            case "32": {
+                getSupportActionBar().setTitle("ข้อมูล คลังวัตถุดิบ");
+                getFirstPageFragmnet("RM01");
+                break;
+            }
+            default: {
+                getSupportActionBar().setTitle("ข้อมูล คลังส่วนประกอบ");
+                getFirstPageFragmnet("RM06");
+            }
+        }
+
         list_category = new ArrayList<>();
-        new CategoryData().execute();
+        new CategoryData(category_id).execute();
 
 
-        //////call product list
+    }
+
+    private void getFirstPageFragmnet(String warehouse_id)
+    {
+        //////call product list in first come
         Bundle bundle = new Bundle();
         ShowListWH01Fragment fragment = new ShowListWH01Fragment();
 
-        bundle.putString("wh_no", "WH01");
+        bundle.putString("wh_no", warehouse_id);//WH01
         fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.detail_contianer, fragment).commit();
-
-
-
     }
 
     @Override
@@ -97,7 +111,7 @@ public class WH01Activity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-            holder.txtname.setText(list.get(position).warehouse_no+" "+list.get(position).warehouse_name);
+            holder.txtname.setText(list.get(position).warehouse_no + " " + list.get(position).warehouse_name);
 
             //Toast.makeText(context, list.get(position).warehouse_name + "||" + list.get(position).warehouse_no, Toast.LENGTH_SHORT).show();
 
@@ -123,7 +137,11 @@ public class WH01Activity extends AppCompatActivity {
                     ShowListWH01Fragment fragment = new ShowListWH01Fragment();
                     bundle.putString("wh_no", list.get(position).warehouse_no);
                     fragment.setArguments(bundle);
-                    getSupportFragmentManager().beginTransaction().replace(R.id.detail_contianer,fragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.detail_contianer, fragment).commit();
+
+
+                    ///set adapter position to 0 on click change
+                    DetailWh01Fragment.adapter_position="0";
 
                 }
             });
@@ -154,6 +172,12 @@ public class WH01Activity extends AppCompatActivity {
 
     private class CategoryData extends AsyncTask<Void, Void, Void> {
 
+        String category_id;
+
+        public CategoryData(String category_id) {
+            this.category_id = category_id;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -166,8 +190,7 @@ public class WH01Activity extends AppCompatActivity {
             if (conn != null) {
                 try {
 
-
-                    String query = "select * from Sys_WarehouseManagement..sys_warehouse where IsDelete=0 and category_id='31'";
+                    String query = "select * from Sys_WarehouseManagement..sys_warehouse where IsDelete=0 and category_id='" + category_id + "'";
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery(query);
 

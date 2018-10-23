@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content">
                 <customfonts.MyTextView
                     android:layout_width="match_parent"
-                    android:text="0193-34-820"
+                    android:text="00-000-00"
                     android:textSize="@dimen/txt_size_title_detail"
                     android:id="@+id/txt_part"
                     android:layout_height="wrap_content" />

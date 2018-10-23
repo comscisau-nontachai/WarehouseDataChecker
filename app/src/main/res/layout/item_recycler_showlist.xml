@@ -71,6 +71,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_weight="1">
 
 
@@ -80,10 +81,26 @@
                 android:padding="10dp"
                 android:textSize="@dimen/txt_size_item_product"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="@color/colorPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:text="10-10-10" />
+
+            <customfonts.MyTextView
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_weight="1"
+                android:id="@+id/txt_warehouse"
+                android:paddingBottom="10dp"
+                android:textSize="@dimen/txt_size_title_warehouse"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/list_item_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="คลังสินค้าสำเร็จรูป" />
         </LinearLayout>
 
         <LinearLayout
@@ -93,9 +110,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <android.support.design.widget.CoordinatorLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+
 
 
                 <customfonts.MyTextView
@@ -109,17 +124,17 @@
                     android:text="10-10-10" />
 
                 <customfonts.MyTextView
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
                     android:id="@+id/txt_date_checked"
-                    android:padding="10dp"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/txt_size_title_warehouse"
                     android:textColor="@color/material_light_green_800"
+                    android:gravity="center_horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"
                     android:text="10-10-10" />
 
-            </android.support.design.widget.CoordinatorLayout>
         </LinearLayout>
     </LinearLayout>
 

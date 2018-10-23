@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.MemoryPolicy;
@@ -30,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -159,9 +165,29 @@ public class MainActivity extends AppCompatActivity{
         findViewById(R.id.card_view_wh01).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),WH01Activity.class));
+                Intent intent = new Intent(getApplicationContext(),WareHouseActivity.class);
+                intent.putExtra("CATEGORY_ID","31");
+                startActivity(intent);
+
             }
         });
+        findViewById(R.id.card_view_wh02).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),WareHouseActivity.class);
+                intent.putExtra("CATEGORY_ID","32");
+                startActivity(intent);
+            }
+        });
+        findViewById(R.id.card_view_wh03).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),WareHouseActivity.class);
+                intent.putExtra("CATEGORY_ID","33");
+                startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -172,10 +198,11 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onResponse(JSONArray response) {
 
+
                 JSONObject jsonObject = null;
                 for (int i=0; i<response.length();i++)
                 {
-                    String part,relate,qty,area1,area2,area3,area4,part_id,type_id,count_new,image,date_check,record_id;
+                    String part,relate,qty,area1,area2,area3,area4,part_id,type_id,count_new,image,date_check,record_id,category_no;
                     try {
 
                         jsonObject = response.getJSONObject(i);
@@ -193,9 +220,10 @@ public class MainActivity extends AppCompatActivity{
                         image = jsonObject.getString("image");
                         date_check = jsonObject.getString("date_check");
                         record_id = jsonObject.getString("record_id");
-//                        date_check = "2018/11/15";
+                        category_no = jsonObject.getString("category_no");
 
-                        WareHouseModel data = new WareHouseModel(part,relate,qty,area1,area2,area3,area4,part_id,type_id,count_new,image,date_check,record_id);
+
+                        WareHouseModel data = new WareHouseModel(part,relate,qty,area1,area2,area3,area4,part_id,type_id,count_new,image,date_check,record_id,category_no);
                         list.add(data);
                     }
                     catch (JSONException e) {
@@ -243,27 +271,56 @@ public class MainActivity extends AppCompatActivity{
         public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
 
-            String part_and_option;
-            if(list.get(position).type_id.equals("1"))
-            {
-                part_and_option = list.get(position).part+"JAP";
-            }else if(list.get(position).type_id.equals("2"))
-            {
-                part_and_option = list.get(position).part+"HIC";
-            }else if(list.get(position).type_id.equals("13"))
-            {
-                part_and_option = list.get(position).part+"";
-            }
-            else if(list.get(position).type_id.equals("15"))
-            {
-                part_and_option = list.get(position).part+"STL";
+            String part_type,category_fullname;
+            ////Check warehouse for extend.
+            if (list.get(position).warehouse_no_search.equals("ST-WH-001")) {
+                category_fullname = "คลังสินค้าสำเร็จรูป";
+
+                if (list.get(position).type_id.equals("1")) {
+                    part_type = "JAP";
+                } else if (list.get(position).type_id.equals("2")) {
+                    part_type = "HIC";
+                } else if (list.get(position).type_id.equals("13")) {
+                    part_type = "";
+                } else if (list.get(position).type_id.equals("15")) {
+                    part_type = "STL";
+                } else {
+                    part_type = "ORI";
+                }
+            } else if (list.get(position).warehouse_no_search.equals("ST-WH-002")) {
+                category_fullname ="คลังวัตถุดิบ";
+
+                if (list.get(position).type_id.equals("1")) {
+                    part_type = "";
+                }else if(list.get(position).type_id.equals("2"))
+                {
+                    part_type = "YSS";
+                }else
+                {
+                    part_type = "KYB";
+                }
+            } else if(list.get(position).warehouse_no_search.equals("ST-WH-003")){
+                category_fullname = "คลังส่วนประกอบ";
+                part_type = "";
             }else
             {
-                part_and_option = list.get(position).part+"ORI";
+                category_fullname="";
+                part_type = "";
             }
-            holder.txt_part.setText(part_and_option);
-            holder.txt_relate.setText(list.get(position).relate);
-            holder.txt_area_all.setText(list.get(position).area1+" / "+list.get(position).area2+" / "+list.get(position).area3+" / "+list.get(position).area4);
+
+            holder.txt_part.setText(list.get(position).part+part_type);
+            holder.txt_warehouse.setText(category_fullname);
+
+
+            ////set area to "-"
+            String area_sum = !list.get(position).area1.equals("null")?list.get(position).area1:"-";
+            area_sum += " / ";
+            area_sum += !list.get(position).area2.equals("null")?list.get(position).area2:"-";
+            area_sum += " / ";
+            area_sum += !list.get(position).area3.equals("null")?list.get(position).area3:"-";
+            area_sum += " / ";
+            area_sum += !list.get(position).area4.equals("0")?list.get(position).area4:"-";
+            holder.txt_area_all.setText(area_sum);
 
             holder.linear_holder.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -279,6 +336,7 @@ public class MainActivity extends AppCompatActivity{
                     intent.putExtra("type_id",list.get(position).type_id);
                     intent.putExtra("record_id",list.get(position).record_id);
                     intent.putExtra("image",list.get(position).image);
+
                     startActivity(intent);
 
                 }
@@ -304,6 +362,8 @@ public class MainActivity extends AppCompatActivity{
             String img = "http://roomdatasoftware.strubberdata.com/pic_partnumber_new/"+list.get(position).image;
             Picasso.get().load(img).placeholder(R.drawable.no_image).into(holder.img_product);
 
+
+
         }
 
         @Override
@@ -312,7 +372,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView txt_part,txt_relate,txt_quantity,txt_area_all,txt_date_check;
+            TextView txt_part,txt_relate,txt_quantity,txt_area_all,txt_date_check,txt_warehouse;
             ImageView img_product,img_checked;
             LinearLayout linear_holder;
             public ViewHolder(View itemView) {
@@ -323,6 +383,7 @@ public class MainActivity extends AppCompatActivity{
                 txt_quantity = itemView.findViewById(R.id.txt_quantity);
                 txt_area_all = itemView.findViewById(R.id.txt_area_all);
                 txt_date_check = itemView.findViewById(R.id.txt_date_checked);
+                txt_warehouse = itemView.findViewById(R.id.txt_warehouse);
 
                 img_product = itemView.findViewById(R.id.img_product);
                 img_checked = itemView.findViewById(R.id.img_checked);
