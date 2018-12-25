@@ -362,8 +362,6 @@ public class MainActivity extends AppCompatActivity{
             String img = "http://roomdatasoftware.strubberdata.com/pic_partnumber_new/"+list.get(position).image;
             Picasso.get().load(img).placeholder(R.drawable.no_image).into(holder.img_product);
 
-
-
         }
 
         @Override

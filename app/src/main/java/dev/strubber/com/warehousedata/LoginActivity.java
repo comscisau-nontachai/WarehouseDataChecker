@@ -49,8 +49,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         //for test
-        edt_username.setText("st772405");
-        edt_password.setText("st772405");
+//        edt_username.setText("st772405");
+//        edt_password.setText("st772405");
 
     }
 
